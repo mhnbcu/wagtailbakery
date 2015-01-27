@@ -61,6 +61,16 @@ class BakeryView(BuildableDetailView):
         response = serve(request, request.path)
         return response
 
+    def get_content(self):
+        """
+        Overrides BuildableMixin's get_content() to work with
+        both TemplateRespose and HttpResponse
+        """
+        response = self.get(self.request)
+        if hasattr(response, 'render'):
+            response = response.render()
+        return response.content
+
     def get_url(self, obj):
         """
         Overrides BuildableDetailView's get_url() to return a url from the
