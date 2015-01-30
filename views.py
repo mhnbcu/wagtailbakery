@@ -2,6 +2,7 @@ from bakery.views import BuildableDetailView
 
 from wagtail.wagtailcore.views import serve
 from wagtail.wagtailcore.middleware import SiteMiddleware
+from wagtail.wagtailcore.models import Site
 
 class BakeryView(BuildableDetailView):
     """
@@ -74,9 +75,17 @@ class BakeryView(BuildableDetailView):
     def get_url(self, obj):
         """
         Overrides BuildableDetailView's get_url() to return a url from the
-        Page model url property
+        Page model url_path property
         """
-        return obj.url
+        root_path = Site.get_site_root_paths()
+        if len(root_path):
+            root_path = root_path[0][1]
+            if obj.url_path == root_path:
+                return '/'
+            elif root_path in obj.url_path:
+                if obj.url_path.index(root_path) == 0:
+                    return obj.url.replace(root_path, '/', 1)
+        return obj.url_path
 
     class Meta:
         abstract = True
