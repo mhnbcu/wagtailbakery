@@ -38,10 +38,6 @@ class BakeryModel(BuildableModel):
     bakery_views = []
 
     @property
-    def build_path(self):
-        return os.path.join(self.slug, 'index.html')
-
-    @property
     def template_name(self):
         return self.template
 
