@@ -4,7 +4,7 @@ def rebuild_parents(instance):
     page = instance.get_parent()
     if page:
         page = page.specific
-    while page:
+    while page and page.live:
         if hasattr(page, 'build'):
             # raise Exception('rebuilding %s' % page.title)
             page.build()
