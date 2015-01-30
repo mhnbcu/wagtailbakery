@@ -4,9 +4,8 @@ def rebuild_parents(instance):
     page = instance.get_parent()
     if page:
         page = page.specific
-    while page and page.live:
+    while page and page.live and (not page.is_root()):
         if hasattr(page, 'build'):
-            # raise Exception('rebuilding %s' % page.title)
             page.build()
         page = page.get_parent()
         if page:
@@ -19,7 +18,7 @@ def handle_publish(sender, instance, **kwargs):
     if hasattr(instance, 'build'):
         instance.build()
         num_revisions = instance.revisions.count()
-        if num_revisions > 1:
+        if (num_revisions > 1) and (not instance.is_root()):
             prior_page = instance.revisions.order_by('-id')[1].as_page_object().specific
             if instance.slug != prior_page.slug:
                     prior_page.unbuild()
