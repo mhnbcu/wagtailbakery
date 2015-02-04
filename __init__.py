@@ -1,4 +1,4 @@
-__version__ = '0.0.8'
+__version__ = '0.1.0-alpha+01'
 default_app_config = 'wagtailbakery.apps.WagtailBakeryAppConfig'
 
 from django import get_version

@@ -1,5 +1,7 @@
 from wagtail.wagtailcore.signals import page_published, page_unpublished
 
+from models import BakeryModel
+
 def rebuild_parents(instance):
     page = instance.get_parent()
     if page:
@@ -15,6 +17,7 @@ def handle_publish(sender, instance, **kwargs):
     """
     Receives page_published signal to build page
     """
+    BakeryModel.init_build_checks()
     if hasattr(instance, 'build'):
         instance.build()
         num_revisions = instance.revisions.count()
@@ -28,6 +31,7 @@ def handle_unpublish(sender, instance, **kwargs):
     """
     Receives page_unpublished signal to unbuild page
     """
+    BakeryModel.init_build_checks()
     if hasattr(instance, 'unbuild'):
         instance.unbuild()
     rebuild_parents(instance)

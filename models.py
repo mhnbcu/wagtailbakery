@@ -2,8 +2,6 @@ from bakery.models import BuildableModel, AutoPublishingBuildableModel
 
 import os
 
-_BAKERY_BUILT = []
-
 class BakeryModel(BuildableModel):
     """
     An abstract class that can be mixedin to create a self building model.
@@ -43,10 +41,8 @@ class BakeryModel(BuildableModel):
         """
         Overrides BuildableModel's build() to prevent multiple runs
         """
-        global _BAKERY_BUILT
         bid = '%s:%s' % (self.__class__.__name__, self.id)
-        if not bid in _BAKERY_BUILT:
-            _BAKERY_BUILT.append(bid)
+        if not bid in self.__class__._already_built:
             super(BakeryModel, self).build()
 
     @property
@@ -63,8 +59,14 @@ class BakeryModel(BuildableModel):
         """
         return self.bakery_views
 
+    @classmethod
+    def init_build_checks(cls):
+        cls._already_built = []
+
     class Meta:
         abstract = True
+
+BakeryModel._already_built = []
 
 class PublishingBakeryModel(BakeryModel, AutoPublishingBuildableModel):
     """

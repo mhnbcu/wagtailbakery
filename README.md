@@ -68,6 +68,6 @@ project/settings.py
     BAKERY_VIEWS = (
         'app.bakery_views.AuthorPageStatic',
     )
-    ALLOW_BAKERY_AUTO_PUBLISHING = False
+    ALLOW_BAKERY_AUTO_PUBLISHING = True
 
 
