@@ -1,6 +1,6 @@
 Wagtail Bakery
 ========================
-Wagtail Bakery provides an integration for static generation with Django Bakery. 
+Wagtail Bakery is a SAMPLE module for static generation with Django Bakery.
 
 Making models available for static generation
 ---------
